@@ -5,19 +5,15 @@ Returns a new Letter object.
 from random import random
 from .Letter import Letter
 
-def add_noise(lettr, noise_level):
-    new_array = []
-
-    def _flip_bit(bit):
-        if bit == 0:
-            return 1
-        else:
-            return 0
-
-    for pixel in lettr.array:
-        if random() <= noise_level:
-            new_array.append(_flip_bit(pixel))
-        else:
-            new_array.append(pixel)
-
-    return Letter(new_array, lettr.letter)
+def add_noise(all_letters, noise_percent=0, num_noisy_nodes=0):
+    i = 0
+    while i < (num_noisy_nodes - 1):
+        letter = random.choice(all_letters)
+        letter_array = letter.array
+        p = 0
+        while (p / float(len(letter_array))) < noise_percent:
+            letter_array[random.choice(range(len(letter_array)))] = random.choice(range(2))
+            p += 1
+        letter.array = letter_array
+        i += 1
+    return all_letters
